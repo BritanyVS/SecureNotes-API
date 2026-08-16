@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: securenotes-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: securenotes-api
+  template:
+    metadata:
+      labels:
+        app: securenotes-api
+    spec:
+      containers:
+      - name: api
+        image: securenotes-api:latest
+        ports:
+        - containerPort: 5000
+        securityContext:
+          privileged: true  # ¡Mala practica!

@@ -16,3 +16,8 @@ itsdangerous==2.2.0
 Jinja2==3.1.5 #3.1.6
 MarkupSafe==3.0.3 
 Werkzeug==3.1.5 #3.1.8
+
+pip install --upgrade jinja2==3.1.6 werkzeug==3.1.6 click==8.3.3
+
+snyk container test securenotes-api:latest --file=Dockerfile
+
