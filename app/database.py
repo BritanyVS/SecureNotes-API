@@ -1,12 +1,14 @@
+import os
 import pyodbc
 
+
 def get_db_connection():
-    # Credenciales hardcodeadas (Sensitive Data Exposure)
     conn = pyodbc.connect(
         'DRIVER={ODBC Driver 17 for SQL Server};'
         'SERVER=localhost;'
         'DATABASE=SecureNotesDB;'
-        'UID=sa;'
-        'PWD=Password123!'
+        f'UID={os.getenv("DB_USER")};'
+        f'PWD={os.getenv("DB_PASSWORD")};'
     )
+
     return conn

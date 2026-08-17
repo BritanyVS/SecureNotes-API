@@ -1,26 +1,23 @@
-from flask import Blueprint, request, render_template_string
+from flask import Blueprint, request
 from app.database import get_db_connection
 
 bp = Blueprint('main', __name__)
 
-# SQL Injection por concatenación directa
+
+# SQL Injection - vulnerabilidad intencional para el laboratorio
 @bp.route('/notes', methods=['GET'])
 def get_notes():
     search_term = request.args.get('search', '')
+
     conn = get_db_connection()
     cursor = conn.cursor()
-    
-    # Consulta vulnerable
+
+    # Consulta vulnerable: SQL Injection
     query = f"SELECT id, title, content FROM Notes WHERE title LIKE '%{search_term}%'"
+
     cursor.execute(query)
     notes = cursor.fetchall()
-    conn.close()
-    
-    return {"notes": [str(note) for note in notes]}
 
-# XSS / Improper Input Validation
-@bp.route('/feedback', methods=['POST'])
-def submit_feedback():
-    comment = request.form.get('comment', '')
-    template = f"<h1>Gracias por tu comentario:</h1><p>{comment}</p>"
-    return render_template_string(template)
+    conn.close()
+
+    return {"notes": [str(note) for note in notes]}

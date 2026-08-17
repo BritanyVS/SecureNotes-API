@@ -15,7 +15,32 @@ spec:
       containers:
       - name: api
         image: securenotes-api:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
+       
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+            
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          
         securityContext:
-          privileged: true  # ¡Mala practica!
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 10001
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+          
+          privileged: true
